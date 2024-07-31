@@ -71,20 +71,20 @@ public class Main {
         System.out.println(randomBabyOrdersList);
 
 
-        Supplier<Product> babyProducts = () -> new Product(f.name().firstName(), "baby", Double.parseDouble(f.commerce().price(40.00, 300.00).replace(",", ".")));
-
-        Supplier<List<Product>> randomBaby = () -> {
-            List<Product> babyProductList = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                babyProductList.add(babyProducts.get());
-            }
-            return babyProductList;
-        };
-        List<Product> randomBabyProducts = randomBaby.get();
-        List<Product> randomBabyAndBookProducts = new ArrayList<>(randomBaby.get());
-        randomBabyAndBookProducts.addAll(randomBooks.get());
-
-
+//        Supplier<Product> babyProducts = () -> new Product(f.name().firstName(), "baby", Double.parseDouble(f.commerce().price(40.00, 300.00).replace(",", ".")));
+//
+//        Supplier<List<Product>> randomBaby = () -> {
+//            List<Product> babyProductList = new ArrayList<>();
+//            for (int i = 0; i < 10; i++) {
+//                babyProductList.add(babyProducts.get());
+//            }
+//            return babyProductList;
+//        };
+//        List<Product> randomBabyProducts = randomBaby.get();
+//        List<Product> randomBabyAndBookProducts = new ArrayList<>(randomBaby.get());
+//        randomBabyAndBookProducts.addAll(randomBooks.get());
+//
+//
 //        Supplier<Order> babyAndBookOrder = () -> {
 //            Calendar startCal1 = Calendar.getInstance();
 //            startCal1.set(2024, Calendar.JANUARY, 1, 0, 0, 0);
@@ -114,7 +114,7 @@ public class Main {
 //            return babyAndBookOrderList;
 //        };
 //        List<Order> randomBabyOrdersList = randomBabyAndBookOrders.get();
-//        List<Order> babyOrderLists = randomBabyOrdersList.stream().filter(order -> order.getProduct().stream().allMatch(product -> Objects.equals(product.getCategory(), "baby"))).collect(Collectors.toList());
+//        List<Order> babyOrderLists = randomBabyOrdersList.forEach(order -> order.getProduct().stream().filter(product -> Objects.equals(product.getCategory(), "baby")).toList());
 //        System.out.println(randomBabyOrdersList);
 //        System.out.println(babyOrderLists);
 
@@ -138,7 +138,7 @@ public class Main {
         randomProducts.addAll(randomBooksProducts);
         System.out.println("lista con tutte le categorie: " + randomProducts);
 
-        List<Product> filteredBoyList = randomProducts.stream().filter(product -> product.getCategory() == "boy").toList();
+        List<Product> filteredBoyList = randomProducts.stream().filter(product -> product.getCategory().equals("boy")).toList();
         System.out.println("lista con tutte la categoria boy: " + filteredBoyList);
         filteredBoyList.forEach(product -> product.sconto10(product.getPrice()));
         System.out.println("lista con tutte la categoria boy + sconto del 10%: " + filteredBoyList);
@@ -178,5 +178,8 @@ public class Main {
         System.out.println("Lista completa con boy-baby-book " + randomOrdersList);
         List<Order> filteredOrderDate = randomOrdersList.stream().filter(order -> order.getCustomer().getTier() == 2).filter(order -> order.getOrderDate().isAfter(LocalDate.parse("2024-02-01")) && order.getOrderDate().isBefore(LocalDate.parse("2024-04-01"))).toList();
         System.out.println("Lista completa con boy-baby-book filtrata per data ordine: " + filteredOrderDate);
+
+        List<Product> productList = filteredOrderDate.stream().flatMap(order -> order.getProduct().stream()).toList();
+        System.out.println("Lista dei prodotti: " + productList);
     }
 }
