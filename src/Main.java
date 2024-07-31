@@ -36,7 +36,6 @@ public class Main {
             return babyProductList;
         };
         List<Product> randomBabyProducts = randomBaby.get();
-//
 
 
         Supplier<Order> babyOrder = () -> {
@@ -68,61 +67,56 @@ public class Main {
             return babyOrderList;
         };
         List<Order> randomBabyOrdersList = randomBabyOrders.get();
-        System.out.println(randomBabyOrdersList);
+        System.out.println(randomBabyOrdersList + "\n");
 
-
-//        Supplier<Product> babyProducts = () -> new Product(f.name().firstName(), "baby", Double.parseDouble(f.commerce().price(40.00, 300.00).replace(",", ".")));
-//
-//        Supplier<List<Product>> randomBaby = () -> {
-//            List<Product> babyProductList = new ArrayList<>();
-//            for (int i = 0; i < 10; i++) {
-//                babyProductList.add(babyProducts.get());
-//            }
-//            return babyProductList;
-//        };
-//        List<Product> randomBabyProducts = randomBaby.get();
-//        List<Product> randomBabyAndBookProducts = new ArrayList<>(randomBaby.get());
-//        randomBabyAndBookProducts.addAll(randomBooks.get());
-//
-//
-//        Supplier<Order> babyAndBookOrder = () -> {
-//            Calendar startCal1 = Calendar.getInstance();
-//            startCal1.set(2024, Calendar.JANUARY, 1, 0, 0, 0);
-//            Calendar endCal1 = Calendar.getInstance();
-//            endCal1.set(2024, Calendar.JULY, 30, 23, 59, 59);
-//
-//            Calendar startCal2 = Calendar.getInstance();
-//            startCal2.set(2024, Calendar.MARCH, 1, 0, 0, 0);
-//            Calendar endCal2 = Calendar.getInstance();
-//            endCal2.set(2024, Calendar.JULY, 30, 23, 59, 59);
-//
-//            // Genera date casuali per startDate e endDate
-//            Date randomStartDate = f.date().between(startCal1.getTime(), endCal1.getTime());
-//            Date randomEndDate = f.date().between(startCal2.getTime(), endCal2.getTime());
-//
-//            // Conversione da Date a LocalDate
-//            LocalDate startDate = randomStartDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//            LocalDate endDate = randomEndDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//            return new Order("in corso", startDate, endDate, randomBabyAndBookProducts, new Customer(f.name().firstName()));
-//        };
-//
-//        Supplier<List<Order>> randomBabyAndBookOrders = () -> {
-//            List<Order> babyAndBookOrderList = new ArrayList<>();
-//            for (int i = 0; i < 10; i++) {
-//                babyAndBookOrderList.add(babyAndBookOrder.get());
-//            }
-//            return babyAndBookOrderList;
-//        };
-//        List<Order> randomBabyOrdersList = randomBabyAndBookOrders.get();
-//        List<Order> babyOrderLists = randomBabyOrdersList.forEach(order -> order.getProduct().stream().filter(product -> Objects.equals(product.getCategory(), "baby")).toList());
-//        System.out.println(randomBabyOrdersList);
-//        System.out.println(babyOrderLists);
-
-
-        System.out.println("-----------------------esercizio 3----------------------------");
-        Supplier<Product> boyProducts = () -> {
-            return new Product(f.name().firstName(), "boy", Double.parseDouble(f.commerce().price(40.00, 300.00).replace(",", ".")));
+        System.out.println("----------------------------esercizio 2 come andava fatto--------------------------------------");
+        Supplier<Product> boyProducts = () -> new Product(f.name().firstName(), "boy", Double.parseDouble(f.commerce().price(40.00, 300.00).replace(",", ".")));
+        Supplier<List<Product>> productListmix = () -> {
+            List<Product> ProductList = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                ProductList.add(babyProducts.get());
+            }
+            for (int i = 0; i < 2; i++) {
+                ProductList.add(boyProducts.get());
+            }
+            for (int i = 0; i < 2; i++) {
+                ProductList.add(bookProducts.get());
+            }
+            return ProductList;
         };
+        Supplier<List<Product>> productListmix1 = () -> {
+            List<Product> ProductList = new ArrayList<>();
+            for (int i = 0; i < 4; i++) {
+                ProductList.add(babyProducts.get());
+            }
+
+            return ProductList;
+        };
+        Supplier<List<Product>> productListmix2 = () -> {
+            List<Product> ProductList = new ArrayList<>();
+            for (int i = 0; i < 3; i++) {
+                ProductList.add(babyProducts.get());
+            }
+
+            for (int i = 0; i < 2; i++) {
+                ProductList.add(bookProducts.get());
+            }
+            return ProductList;
+        };
+        List<Product> randomProducts0 = productListmix.get();
+        List<Product> randomProducts1 = productListmix1.get();
+        List<Product> randomProducts2 = productListmix2.get();
+        Order orde = new Order("in corso", LocalDate.parse("2024-01-10"), LocalDate.parse("2024-02-02"), randomProducts0, new Customer(f.name().firstName()));
+        Order orde2 = new Order("completo", LocalDate.parse("2024-03-15"), LocalDate.parse("2024-05-25"), randomProducts1, new Customer(f.name().firstName()));
+        Order orde3 = new Order("in corso", LocalDate.parse("2024-01-17"), LocalDate.parse("2024-02-26"), randomProducts2, new Customer(f.name().firstName()));
+        List<Order> randomOrdersListMix = new ArrayList<>();
+        randomOrdersListMix.add(orde);
+        randomOrdersListMix.add(orde2);
+        randomOrdersListMix.add(orde3);
+        List<Order> orderListBabyFiltered = randomOrdersListMix.stream().filter(order -> order.getProduct().stream().allMatch(product -> product.getCategory().equals("baby"))).toList();
+        System.out.println("lista completa: " + randomOrdersListMix);
+        System.out.println("lista filtrata in base alla categoria: " + orderListBabyFiltered);
+        System.out.println("-----------------------esercizio 3----------------------------");
         Supplier<List<Product>> randomBoy = () -> {
             List<Product> boyProductList = new ArrayList<>();
             for (int i = 0; i < 10; i++) {
